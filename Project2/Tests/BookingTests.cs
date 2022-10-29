@@ -30,13 +30,13 @@ namespace Project2.Tests
 
             //Assert
             //Assert.AreEqual(HttpStatusCode.OK, demoResponse.StatusCode, "Failed due to wrong status code.");
-            Assert.AreEqual(BookingIdDetails.Booking.Firstname, demoResponse.Firstname);
-            Assert.AreEqual(BookingIdDetails.Booking.Lastname, demoResponse.Lastname);
-            Assert.AreEqual(BookingIdDetails.Booking.Totalprice, demoResponse.Totalprice);
-            Assert.AreEqual(BookingIdDetails.Booking.Depositpaid, demoResponse.Depositpaid);
-            Assert.AreEqual(BookingIdDetails.Booking.Bookingdates.Checkin, demoResponse.Bookingdates.Checkin);
-            Assert.AreEqual(BookingIdDetails.Booking.Bookingdates.Checkout, demoResponse.Bookingdates.Checkout);
-            Assert.AreEqual(BookingIdDetails.Booking.Additionalneeds, demoResponse.Additionalneeds);
+            Assert.AreEqual(BookingIdDetails.Booking.Firstname, demoResponse.Firstname, "First name does not match.");
+            Assert.AreEqual(BookingIdDetails.Booking.Lastname, demoResponse.Lastname, "Last name does not match.");
+            Assert.AreEqual(BookingIdDetails.Booking.Totalprice, demoResponse.Totalprice, "Total price does not match.");
+            Assert.AreEqual(BookingIdDetails.Booking.Depositpaid, demoResponse.Depositpaid, "Deposit paid does not match.");
+            Assert.AreEqual(BookingIdDetails.Booking.Bookingdates.Checkin, demoResponse.Bookingdates.Checkin, "Checkin does not match.");
+            Assert.AreEqual(BookingIdDetails.Booking.Bookingdates.Checkout, demoResponse.Bookingdates.Checkout, "Checkout does not match.");
+            Assert.AreEqual(BookingIdDetails.Booking.Additionalneeds, demoResponse.Additionalneeds, "Additiona needs does not match.");
         }
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace Project2.Tests
             var demoResponse = await RestClient.ExecuteGetAsync<BookingModel>(demoGetRequest);
 
             //Assert
-            Assert.AreEqual(HttpStatusCode.NotFound, demoResponse.StatusCode, "Failed due to wrong status code.");
+            Assert.AreEqual(HttpStatusCode.NotFound, demoResponse.StatusCode, "Status code does not match.");
         }
 
         [TestCleanup]

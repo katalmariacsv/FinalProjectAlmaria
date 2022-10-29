@@ -1,13 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Net.Http;
-using System;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 using System.Net;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Project1.DataModels;
 using Project1.Resources;
 using Project1.Helpers;
@@ -34,14 +26,15 @@ namespace Project1.Tests
             var getCreatedBooking = await bookingHelper.GetBookingById(getResponse.BookingId);
             var getCreatedBookingResponse = JsonConvert.DeserializeObject<BookingModel>(getCreatedBooking.Content.ReadAsStringAsync().Result);
 
-            var expectedData = GenerateBooking.CreateBooking();
-            Assert.AreEqual(expectedData.Firstname, getCreatedBookingResponse.Firstname);
-            Assert.AreEqual(expectedData.Lastname, getCreatedBookingResponse.Lastname);
-            Assert.AreEqual(expectedData.Totalprice, getCreatedBookingResponse.Totalprice);
-            Assert.AreEqual(expectedData.Depositpaid, getCreatedBookingResponse.Depositpaid);
-            Assert.AreEqual(expectedData.Bookingdates.Checkin, getCreatedBookingResponse.Bookingdates.Checkin);
-            Assert.AreEqual(expectedData.Bookingdates.Checkout, getCreatedBookingResponse.Bookingdates.Checkout);
-            Assert.AreEqual(expectedData.Additionalneeds, getCreatedBookingResponse.Additionalneeds);
+            var addedData = GenerateBooking.CreateBooking();
+
+            Assert.AreEqual(addedData.Firstname, getCreatedBookingResponse.Firstname, "First name does not match.");
+            Assert.AreEqual(addedData.Lastname, getCreatedBookingResponse.Lastname, "Last name does not match.");
+            Assert.AreEqual(addedData.Totalprice, getCreatedBookingResponse.Totalprice, "Total price does not match.");
+            Assert.AreEqual(addedData.Depositpaid, getCreatedBookingResponse.Depositpaid, "Deposit paid does not match.");
+            Assert.AreEqual(addedData.Bookingdates.Checkin, getCreatedBookingResponse.Bookingdates.Checkin, "Checkin does not match.");
+            Assert.AreEqual(addedData.Bookingdates.Checkout, getCreatedBookingResponse.Bookingdates.Checkout, "Checkout does not match.");
+            Assert.AreEqual(addedData.Additionalneeds, getCreatedBookingResponse.Additionalneeds, "Additional needs does not match.");
 
             await bookingHelper.DeleteBookingById(getResponse.BookingId);
         }
@@ -61,8 +54,8 @@ namespace Project1.Tests
 
             var updatedData = new BookingModel()
             {
-                Firstname = "Team.put.updated",
-                Lastname = "Spirit.put.updated",
+                Firstname = "Ana",
+                Lastname = "Santos",
                 Totalprice = getCreatedBookingResponse.Totalprice,
                 Depositpaid = getCreatedBookingResponse.Depositpaid,
                 Bookingdates = getCreatedBookingResponse.Bookingdates,
@@ -76,13 +69,13 @@ namespace Project1.Tests
             var getUpdatedBooking = await bookingHelper.GetBookingById(getResponse.BookingId);
             var getUpdatedBookingResponse = JsonConvert.DeserializeObject<BookingModel>(getUpdatedBooking.Content.ReadAsStringAsync().Result);
 
-            Assert.AreEqual(updatedData.Firstname, getUpdatedBookingResponse.Firstname);
-            Assert.AreEqual(updatedData.Lastname, getUpdatedBookingResponse.Lastname);
-            Assert.AreEqual(updatedData.Totalprice, getUpdatedBookingResponse.Totalprice);
-            Assert.AreEqual(updatedData.Depositpaid, getUpdatedBookingResponse.Depositpaid);
-            Assert.AreEqual(updatedData.Bookingdates.Checkin, getUpdatedBookingResponse.Bookingdates.Checkin);
-            Assert.AreEqual(updatedData.Bookingdates.Checkout, getUpdatedBookingResponse.Bookingdates.Checkout);
-            Assert.AreEqual(updatedData.Additionalneeds, getUpdatedBookingResponse.Additionalneeds);
+            Assert.AreEqual(updatedData.Firstname, getUpdatedBookingResponse.Firstname, "First name does not match.");
+            Assert.AreEqual(updatedData.Lastname, getUpdatedBookingResponse.Lastname, "Last name does not match.");
+            Assert.AreEqual(updatedData.Totalprice, getUpdatedBookingResponse.Totalprice, "Total price does not match.");
+            Assert.AreEqual(updatedData.Depositpaid, getUpdatedBookingResponse.Depositpaid, "Deposit paid does not match.");
+            Assert.AreEqual(updatedData.Bookingdates.Checkin, getUpdatedBookingResponse.Bookingdates.Checkin, "Checkin does not match.");
+            Assert.AreEqual(updatedData.Bookingdates.Checkout, getUpdatedBookingResponse.Bookingdates.Checkout, "Checkout does not match.");
+            Assert.AreEqual(updatedData.Additionalneeds, getUpdatedBookingResponse.Additionalneeds, "Additional needs does not match.");
 
             await bookingHelper.DeleteBookingById(getResponse.BookingId);
         }
@@ -99,19 +92,17 @@ namespace Project1.Tests
 
             var deleteBooking = await bookingHelper.DeleteBookingById(getResponse.BookingId);
 
-            Assert.AreEqual(deleteBooking.StatusCode, HttpStatusCode.Created);
+            Assert.AreEqual(deleteBooking.StatusCode, HttpStatusCode.Created, "Status code does not match.");
         }
 
         [TestMethod]
         public async Task GetRandomBookingId()
         {
             bookingHelper = new BookingHelper();
-            Random random = new Random();
-            int randomNumber = random.Next(9000000, 999999999);
 
-            var getCreatedBooking = await bookingHelper.GetBookingById(randomNumber);
+            var getCreatedBooking = await bookingHelper.GetBookingById(1230916);
 
-            Assert.AreEqual(getCreatedBooking.StatusCode, HttpStatusCode.NotFound);
+            Assert.AreEqual(HttpStatusCode.NotFound, getCreatedBooking.StatusCode, "Status code does not match.");
         }
     }
 }
